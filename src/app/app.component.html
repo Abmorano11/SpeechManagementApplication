@@ -2,19 +2,19 @@
   <li [ngbNavItem]="1">
     <a ngbNavLink>View my speeches</a>
     <ng-template ngbNavContent>
-      <app-speech-view></app-speech-view>
+      <app-speech-view [speechId]="speechId"></app-speech-view>
     </ng-template>
   </li>
   <li [ngbNavItem]="2">
     <a ngbNavLink>Submit a new speech</a>
     <ng-template ngbNavContent>
-      <app-speech-add></app-speech-add>
+      <app-speech-form></app-speech-form>
     </ng-template>
   </li>
   <li [ngbNavItem]="3">
     <a ngbNavLink>Search all speeches</a>
     <ng-template ngbNavContent>
-      <app-speech-search></app-speech-search>
+      <app-speech-search (searchResult)="showSpeech($event)"></app-speech-search>
     </ng-template>
   </li>
 </ul>

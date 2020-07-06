@@ -7,6 +7,11 @@ import { SpeechService } from './speech.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private speechService: SpeechService) {}
+  constructor() {}
   active = 1;
+  speechId = '';
+  showSpeech(speechIdToShow) {
+    this.active = 1;
+    this.speechId = speechIdToShow;
+  }
 }
