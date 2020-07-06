@@ -15,8 +15,33 @@ export class SpeechService {
     return of(this.Speeches);
   }
 
-  public addSpeech(speech: Speech) {
-    this.Speeches.push(speech);
+  public addSpeech(speechToAdd: Speech) {
+    if (this.Speeches.find(speech => speech.id === speechToAdd.id)) {
+      return false;
+    } else {
+      this.Speeches.push(speechToAdd);
+      return true;
+    }
+  }
+
+  public editSpeech(speechToEdit: Speech) {
+    const speechIndex = this.Speeches.findIndex(speech => speech.id === speechToEdit.id);
+    if (speechIndex !== -1) {
+      this.Speeches[speechIndex] = speechToEdit;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public deleteSpeech(speechToRemove: Speech) {
+    const speechIndex = this.Speeches.findIndex(speech => speech.id === speechToRemove.id);
+    if (speechIndex !== -1) {
+      this.Speeches.splice(speechIndex, 1);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public filterSpeechByAuthor(author: string) {

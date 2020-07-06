@@ -1,7 +1,8 @@
 export class Speech {
-    id: number;
+    id: string;
     author: string;
     title: string;
+    keywords: Array<string>;
     content: string;
-    dateCreated: Date;
+    date: Date;
 }

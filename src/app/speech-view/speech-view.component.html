@@ -4,7 +4,7 @@
             <li ngbNavItem="{{speech.id}}">
                 <a ngbNavLink>{{speech.title}}</a>
                 <ng-template ngbNavContent>
-                    <app-speech-content [speech]="speech"></app-speech-content>
+                    <app-speech-form [speech]="speech"></app-speech-form>
                 </ng-template>
             </li>
         </div>

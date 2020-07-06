@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SpeechService } from '../speech.service';
+import { Speech } from '../speech.model';
 
 @Component({
   selector: 'app-speech-view',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpeechViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(public speechService: SpeechService) { }
+  private speeches: Array<Speech>;
 
   ngOnInit() {
+    this.speechService.getSpeeches().toPromise().then(Speeches => {
+      this.speeches = Speeches;
+    });
   }
 
 }
