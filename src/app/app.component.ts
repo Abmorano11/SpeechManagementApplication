@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SpeechService } from './speech.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'SpeechManagementApplication';
+  constructor(private speechService: SpeechService) {}
+  active = 1;
 }
