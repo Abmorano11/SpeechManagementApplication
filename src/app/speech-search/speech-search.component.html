@@ -1,25 +1,29 @@
-<form>
-    <div class="form-group form-inline">
-        <input class="form-control ml-2" type="text" [formControl]="filter"/>
-    </div>
-</form>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Author</th>
-            <th scope="col">Keywords</th>
-            <th scope="col">Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let speech of speeches$ | async; index as i">
-            <th scope="row">{{ i + 1 }}</th>
-            <td><ngb-highlight [result]="speech.title" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="speech.author" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="speech.keywords" [term]="filter.value"></ngb-highlight></td>
-            <td><ngb-highlight [result]="speech.date | date " [term]="filter.value"></ngb-highlight></td>
-        </tr>
-    </tbody>
-</table>
+<div class="container">
+    <form>
+        <div class="form-group form-inline">
+            <input class="form-control ml-2" type="text" [formControl]="filter" placeholder="Search..."/>
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Keywords</th>
+                <th scope="col">Date</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let speech of speeches$ | async; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td><ngb-highlight [result]="speech.title" [term]="filter.value"></ngb-highlight></td>
+                <td><ngb-highlight [result]="speech.author" [term]="filter.value"></ngb-highlight></td>
+                <td><ngb-highlight [result]="speech.keywords" [term]="filter.value"></ngb-highlight></td>
+                <td><ngb-highlight [result]="speech.date | date " [term]="filter.value"></ngb-highlight></td>
+                <td><button class="btn btn-sm btn-info" (click)="open(speech.id)">Open Speech</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

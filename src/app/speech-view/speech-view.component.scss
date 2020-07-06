@@ -1,0 +1,13 @@
+.container {
+    background-color: #ffffff;
+    padding: 15px 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.25);
+}
+
+.nav-pills .nav-link.active {
+    background-color: #777777;
+}
+.nav-pills .nav-link:hover {
+    background-color: #cccccc;
+}

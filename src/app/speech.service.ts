@@ -1,58 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Speech } from './speech.model';
+import _speeches from '../assets/BaseData.json';
 import * as _ from 'lodash';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpeechService {
 
-  constructor() { }
-  private Speeches = new Array<Speech>();
+  constructor(public toastr: ToastrService) { }
+  public Speeches: Array<Speech> = _speeches;
 
   public getSpeeches(): Observable<Speech[]> {
     return of(this.Speeches);
   }
 
-  public addSpeech(speechToAdd: Speech) {
+  public addSpeech(speechToAdd: Speech): Observable<boolean> {
     if (this.Speeches.find(speech => speech.id === speechToAdd.id)) {
-      return false;
+      return of(false);
     } else {
       this.Speeches.push(speechToAdd);
-      return true;
+      return of(true);
     }
   }
 
-  public editSpeech(speechToEdit: Speech) {
+  public editSpeech(speechToEdit: Speech): Observable<boolean> {
     const speechIndex = this.Speeches.findIndex(speech => speech.id === speechToEdit.id);
-    if (speechIndex !== -1) {
+    if (speechIndex > -1) {
       this.Speeches[speechIndex] = speechToEdit;
-      return true;
+      return of(true);
     } else {
-      return false;
+      return of(false);
     }
   }
 
-  public deleteSpeech(speechToRemove: Speech) {
+  public deleteSpeech(speechToRemove: Speech): Observable<boolean> {
     const speechIndex = this.Speeches.findIndex(speech => speech.id === speechToRemove.id);
-    if (speechIndex !== -1) {
+    if (speechIndex > -1) {
       this.Speeches.splice(speechIndex, 1);
-      return true;
+      return of(true);
     } else {
-      return false;
+      return of(false);
     }
-  }
-
-  public filterSpeechByAuthor(author: string) {
-    return _.filter(this.Speeches, (speech) => {
-      return speech.author.search(author);
-    });
-  }
-
-  public filterSpeechByTitle(title: string) {
-    return _.filter(this.Speeches, (speech) => {
-      return speech.title.search(title);
-    });
   }
 }

@@ -10,14 +10,14 @@ import { Speech } from '../speech.model';
 export class SpeechViewComponent implements OnInit {
   @Input() speechId?: string;
   constructor(public speechService: SpeechService) { }
-  private speeches: Array<Speech>;
-  private active;
+  speeches: Array<Speech>;
+  active;
 
   ngOnInit() {
-    this.speechService.getSpeeches().toPromise().then(Speeches => {
+    this.speechService.getSpeeches().subscribe(Speeches => {
       this.speeches = Speeches;
+      this.active = this.speechId ? this.speechId : this.speeches[0].id;
     });
-    this.active = this.speechId ? this.speechId : this.speeches[0].id;
   }
 
 }

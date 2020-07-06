@@ -16,9 +16,10 @@ export class SpeechFormComponent implements OnInit {
     public speechService: SpeechService,
     public toastr: ToastrService
   ) { }
-  private showShare = false;
-  private speechToShare = new Speech();
-  private speechForm = new FormGroup({
+
+  showShare = false;
+  speechToShare = new Speech();
+  speechForm = new FormGroup({
     content: new FormControl(''),
     title: new FormControl(''),
     keywords: new FormControl(''),
@@ -42,7 +43,7 @@ export class SpeechFormComponent implements OnInit {
     if (show) {
       this.showShare = true;
     } else {
-      const formValues = this.speechForm.value();
+      const formValues = this.speechForm.value;
       this.speechToShare.author = formValues.author;
       this.speechToShare.title = formValues.title;
       this.speechToShare.content = formValues.content;
@@ -57,37 +58,42 @@ export class SpeechFormComponent implements OnInit {
   }
 
   delete() {
-    if (this.speechService.deleteSpeech(this.speech)) {
-      this.toastr.success('Success', 'Successfully Deleted Speech.');
-    } else {
-      this.toastr.error('Error', 'Speech ID not found');
-    }
+    this.speechService.deleteSpeech(this.speech).toPromise().then(result => {
+      if (result) {
+        this.toastr.success('Success', 'Successfully Deleted Speech.');
+      } else {
+        this.toastr.error('Error', 'Speech ID not found');
+      }
+    });
   }
 
   edit(speechToEdit: Speech) {
-    if (this.speechService.editSpeech(speechToEdit)) {
-      this.toastr.success('Success', 'Successfully Edited Speech.');
-    } else {
-      this.toastr.error('Error', 'Speech ID not found');
-    }
+    this.speechService.editSpeech(speechToEdit).toPromise().then(result => {
+      if (result) {
+        this.toastr.success('Success', 'Successfully Edited Speech.');
+      } else {
+        this.toastr.error('Error', 'Speech ID not found');
+      }
+    });
   }
 
   save() {
     const speechToSave = new Speech();
-    const formValues = this.speechForm.value();
-    speechToSave.id = this.speech ? this.speech.id : Date.now().toString() + formValues.author;
+    const formValues = this.speechForm.value;
+    speechToSave.id = !!this.speech ? this.speech.id : Date.now().toString() + formValues.author;
     speechToSave.author = formValues.author;
     speechToSave.title = formValues.title;
     speechToSave.keywords = formValues.keywords.split(', ');
     speechToSave.content = formValues.content;
     speechToSave.date = formValues.date;
-    console.log(speechToSave);
-    if (this.speech) {
-      if (this.speechService.addSpeech(speechToSave)) {
-        this.toastr.success('Success', 'Successfully Added Speech.');
-      } else {
-        this.toastr.error('Error', 'Duplicate Speech ID found');
-      }
+    if (!this.speech) {
+      this.speechService.addSpeech(speechToSave).toPromise().then(result => {
+        if (result) {
+          this.toastr.success('Success', 'Successfully Added Speech.');
+        } else {
+          this.toastr.error('Error', 'Duplicate Speech ID found');
+        }
+      });
     } else {
       this.edit(speechToSave);
     }

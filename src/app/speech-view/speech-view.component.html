@@ -1,14 +1,14 @@
-<div class="d-flex">
-    <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills" orientation="vertical">
-        <div *ngFor="let speech of speeches">
-            <li ngbNavItem="{{speech.id}}">
+<div class="container">
+    <div class="d-flex">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-pills" orientation="vertical">
+            <li *ngFor="let speech of speeches" ngbNavItem="{{speech.id}}">
                 <a ngbNavLink>{{speech.title}}</a>
                 <ng-template ngbNavContent>
                     <app-speech-form [speech]="speech"></app-speech-form>
                 </ng-template>
             </li>
-        </div>
-    </ul>
-  
-    <div [ngbNavOutlet]="nav" class="ml-4"></div>
-  </div>
+        </ul>
+      
+        <div [ngbNavOutlet]="nav" class="ml-4"></div>
+    </div>
+</div>

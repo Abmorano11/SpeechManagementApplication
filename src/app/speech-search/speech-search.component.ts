@@ -1,32 +1,33 @@
-import { Component, OnInit, PipeTransform } from '@angular/core';
+import { Component, OnInit, PipeTransform, Output, EventEmitter } from '@angular/core';
 import { Speech } from '../speech.model';
 import { SpeechService } from '../speech.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-speech-search',
   templateUrl: './speech-search.component.html',
   styleUrls: ['./speech-search.component.scss']
 })
 export class SpeechSearchComponent implements OnInit {
-  private speeches: Array<Speech>;
-  private speeches$: Observable<Speech[]>;
-  private filter = new FormControl('');
+  @Output() searchResult = new EventEmitter<string>();
+  speeches: Array<Speech>;
+  speeches$: Observable<Speech[]>;
+  filter = new FormControl('');
 
   constructor(
     public speechService: SpeechService,
-    pipe: DatePipe
-  ) {
-    this.speeches$ = this.filter.valueChanges.pipe(
-      startWith(''),
-      map(text => this.search(text, pipe))
-    );
-  }
+    public pipe: DatePipe
+  ) { }
   ngOnInit() {
     this.speechService.getSpeeches().toPromise().then(Speeches => {
       this.speeches = Speeches;
+      this.speeches$ = this.filter.valueChanges.pipe(
+        startWith(''),
+        map(text => this.search(text, this.pipe))
+      );
     });
   }
   search(text: string, pipe: PipeTransform, ): Speech[] {
@@ -37,6 +38,9 @@ export class SpeechSearchComponent implements OnInit {
           || speech.keywords.toString().toLowerCase().includes(term)
           || pipe.transform(speech.date).includes(term);
     });
+  }
+  open(speechId) {
+    this.searchResult.emit(speechId);
   }
 
 }
