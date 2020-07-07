@@ -1,4 +1,12 @@
-<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs nav-fill">
+<div ngbDropdown class="showWhenSmall">
+  <button class="btn btn-block btn-outline-dark" type="button" id="dropdownBasic1" ngbDropdownToggle>Change Tab</button>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropwdown">
+    <button ngbDropdownItem (click)="active = 1">View my speeches</button>
+    <button ngbDropdownItem (click)="active = 2">Submit a new speech</button>
+    <button ngbDropdownItem (click)="active = 3">Search all speeches</button>
+  </div>
+</div>
+<ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs nav-fill showWhenLarge">
   <li [ngbNavItem]="1">
     <a ngbNavLink>View my speeches</a>
     <ng-template ngbNavContent>

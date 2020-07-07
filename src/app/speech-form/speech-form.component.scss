@@ -9,14 +9,44 @@
     color: black;
 }
 
-.share {
-    margin-left: -12px;
-}
 
 .send {
     margin: 5px 15px;
 }
 
-textarea {
+.textarea {
     height: 150px;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .btn-phone {
+        display: none;
+    }
+    .btn-block{
+        display: block;
+    }
+    .col-xs-12{
+        margin-top: 0.5rem;
+    }
+    .share {
+        margin-left: 0;
+    }
+}
+@media (min-width: 768px) {
+    .btn-phone {
+        display: block;
+    }
+    .btn-block{
+        display: none;
+    }
+    .full-width {
+        width: 100%;
+    }
+    .col-xs-12{
+        margin-top: 0;
+    }
+
+    .share {
+        margin-left: -12px;
+    }
 }

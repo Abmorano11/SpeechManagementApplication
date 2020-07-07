@@ -13,3 +13,27 @@ a {
 .container {
     margin-top: 20px;
 }
+
+.showWhenSmall, .showWhenLarge {
+    display: none;
+}
+
+.dropwdown {
+    width: 100%;
+    text-align: center;
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .showWhenSmall{
+        display: block;
+    }
+}
+@media (min-width: 768px) {
+    .showWhenSmall{
+        display: none;
+    }
+    
+    .showWhenLarge{
+        display: flex;
+    }
+}
