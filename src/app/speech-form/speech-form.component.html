@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [ngClass]="{'shadow': !speech}">
     <form [formGroup]="speechForm">
         <div class="form-group">
             <input type="text" formControlName="title" class="form-control" placeholder="Title">
