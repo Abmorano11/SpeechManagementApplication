@@ -4,3 +4,27 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.25);
 }
+
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .table {
+        line-height: 1;
+    }
+    .table td{
+        padding: 0.1rem !important;
+    }
+    .btn-sm {
+        padding: 0.1rem !important;
+    }
+}
+@media (min-width: 768px) {
+    .table {
+        line-height: 1.5;
+    }
+    .table td{
+        padding: 0.75rem !important;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.5rem !important;
+    }
+}
