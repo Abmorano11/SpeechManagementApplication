@@ -4,14 +4,20 @@ import { Speech } from './speech.model';
 import _speeches from '../assets/BaseData.json';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpeechService {
 
-  constructor(public toastr: ToastrService) { }
-  public Speeches: Array<Speech> = _speeches;
+  public Speeches = new Array<Speech>();
+  constructor(public toastr: ToastrService) {
+    _.each(_speeches, speech => {
+      speech.date = moment(speech.date).startOf('day').toDate();
+      this.Speeches.push(speech);
+    });
+  }
 
   public getSpeeches(): Observable<Speech[]> {
     return of(this.Speeches);

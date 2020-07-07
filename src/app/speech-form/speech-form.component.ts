@@ -4,6 +4,16 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { SpeechService } from '../speech.service';
 import { ToastrService } from 'ngx-toastr';
 import emailjs, { EmailJSResponseStatus } from 'emailjs-com';
+import * as moment from 'moment';
+import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
+
+class ShareForm {
+  user_email: string;
+  message: string;
+  title: string;
+  author: string;
+  content: string;
+}
 
 @Component({
   selector: 'app-speech-form',
@@ -18,7 +28,7 @@ export class SpeechFormComponent implements OnInit {
   ) { }
 
   showShare = false;
-  speechToShare = new Speech();
+  speechToShare = new ShareForm();
   speechForm = new FormGroup({
     content: new FormControl(''),
     title: new FormControl(''),
@@ -34,12 +44,12 @@ export class SpeechFormComponent implements OnInit {
         title: this.speech.title,
         keywords: this.speech.keywords.toString(),
         author: this.speech.author,
-        date: this.speech.date,
+        date: new NgbDate(this.speech.date.getFullYear(), this.speech.date.getMonth(), this.speech.date.getDate()),
       });
     }
   }
 
-  share(show: boolean, e?) {
+  share(show: boolean) {
     if (show) {
       this.showShare = true;
     } else {
@@ -47,11 +57,11 @@ export class SpeechFormComponent implements OnInit {
       this.speechToShare.author = formValues.author;
       this.speechToShare.title = formValues.title;
       this.speechToShare.content = formValues.content;
-      emailjs.sendForm('speech_app', 'speech_app_template', e.target as HTMLFormElement, 'user_qCOQdt7MD0KqENM7K8pCM')
+      emailjs.send('speech_app', 'speech_app_template', this.speechToShare, 'user_qCOQdt7MD0KqENM7K8pCM')
       .then((result: EmailJSResponseStatus) => {
-        console.log(result.text);
+        this.toastr.success('Successfully Shared Speech.', 'Success');
       }, (error) => {
-        console.log(error.text);
+        this.toastr.error(error.text, 'Error');
       });
       this.showShare = false;
     }
@@ -59,20 +69,22 @@ export class SpeechFormComponent implements OnInit {
 
   delete() {
     this.speechService.deleteSpeech(this.speech).toPromise().then(result => {
+      this.speechForm.reset();
       if (result) {
-        this.toastr.success('Success', 'Successfully Deleted Speech.');
+        this.toastr.success('Successfully Deleted Speech.', 'Success');
       } else {
-        this.toastr.error('Error', 'Speech ID not found');
+        this.toastr.error('Speech ID not found', 'Error');
       }
     });
   }
 
   edit(speechToEdit: Speech) {
     this.speechService.editSpeech(speechToEdit).toPromise().then(result => {
+      this.speechForm.reset();
       if (result) {
-        this.toastr.success('Success', 'Successfully Edited Speech.');
+        this.toastr.success('Successfully Edited Speech.', 'Success');
       } else {
-        this.toastr.error('Error', 'Speech ID not found');
+        this.toastr.error('Speech ID not found', 'Error');
       }
     });
   }
@@ -85,13 +97,14 @@ export class SpeechFormComponent implements OnInit {
     speechToSave.title = formValues.title;
     speechToSave.keywords = formValues.keywords.split(', ');
     speechToSave.content = formValues.content;
-    speechToSave.date = formValues.date;
+    speechToSave.date = moment(formValues.date).toDate();
     if (!this.speech) {
       this.speechService.addSpeech(speechToSave).toPromise().then(result => {
+        this.speechForm.reset();
         if (result) {
-          this.toastr.success('Success', 'Successfully Added Speech.');
+          this.toastr.success('Successfully Added Speech.', 'Success');
         } else {
-          this.toastr.error('Error', 'Duplicate Speech ID found');
+          this.toastr.error('Duplicate Speech ID found', 'Error');
         }
       });
     } else {
