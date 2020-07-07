@@ -4,7 +4,7 @@ import { SpeechService } from '../speech.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-speech-search',
@@ -18,25 +18,24 @@ export class SpeechSearchComponent implements OnInit {
   filter = new FormControl('');
 
   constructor(
-    public speechService: SpeechService,
-    public pipe: DatePipe
+    public speechService: SpeechService
   ) { }
   ngOnInit() {
     this.speechService.getSpeeches().toPromise().then(Speeches => {
       this.speeches = Speeches;
       this.speeches$ = this.filter.valueChanges.pipe(
         startWith(''),
-        map(text => this.search(text, this.pipe))
+        map(text => this.search(text))
       );
     });
   }
-  search(text: string, pipe: PipeTransform, ): Speech[] {
+  search(text: string): Speech[] {
     return this.speeches.filter(speech => {
       const term = text.toLowerCase();
       return speech.author.toLowerCase().includes(term)
           || speech.title.toLowerCase().includes(term)
           || speech.keywords.toString().toLowerCase().includes(term)
-          || pipe.transform(speech.date).includes(term);
+          || moment(speech.date).format('MMM DD YYYY').toLowerCase().includes(term);
     });
   }
   open(speechId) {
